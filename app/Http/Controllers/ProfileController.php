@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Input;
 
 class ProfileController extends Controller
 {
+    protected $rules = [
+        'name' => 'required|min:5',
+    ];
     /**
      * Display a listing of the resource.
      *
@@ -38,9 +41,11 @@ class ProfileController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, $this->rules);
+        
         $data = Input::all();
         $profile = new Profile($data);
-        if($profile && $data['name']){
+        if($profile){
             $profile->save();
         }
         return redirect("/profiles");
@@ -77,9 +82,11 @@ class ProfileController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request, $this->rules);
+         
         $profile = Profile::find($id);
         $data = Input::all();
-        if($profile && $data['name']){
+        if($profile){
             $profile->update($data);
         }
         return redirect("/profiles");

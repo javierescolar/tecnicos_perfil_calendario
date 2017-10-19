@@ -15,6 +15,12 @@ class TechnicanController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    protected $rules = [
+        'name' => 'required|min:3',
+        'last_name' => 'required|min:5',
+        'email' => 'required|unique:users|min:5',
+    ];
+     
     public function index()
     {
         $technicians = Technician::all();
@@ -40,15 +46,16 @@ class TechnicanController extends Controller
      */
     public function store(Request $request)
     {
+        
+        $this->validate($request, $this->rules);
+        
         $data =  Input::all();
         $technician = new Technician();
         $technician->name = $data['name'];
         $technician->last_name = $data['last_name'];
         $technician->email = $data['email'];
         
-        if(($data['name'] != "" && $data['last_name'] != "" && $data['email'] != "") && $technician->save()){
-            
-
+        if($technician->save()){
             $sync_data = [];
             foreach($data['profile'] as $key => $profile){
                 $sync_data[$profile] = ['technician_id_trc' => $data['technician_id_trc'][$key] ];
@@ -103,9 +110,12 @@ class TechnicanController extends Controller
      */
     public function update(Request $request, $id)
     {
+        
+        $this->validate($request, $this->rules);
+        
         $technician = Technician::find($id);
         $data =  Input::all();
-        if($technician && ($data['name'] != "" && $data['last_name'] != "" && $data['email'] != "" )){
+        if($technician ){
             
             $technician->name = $data['name'];
             $technician->last_name = $data['last_name'];
