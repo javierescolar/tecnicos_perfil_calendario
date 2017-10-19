@@ -1,0 +1,11 @@
+.panel-margin {
+    margin-top:1em;
+}
+
+.btn-display-none{
+    display:none;
+}
+
+nav li:hover{
+    background-color:#ddd;
+}
