@@ -6,7 +6,7 @@
    <h1>
     TechnicianController#index
     </h1>
-    
+
      
      <a href="{{ url('home') }}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-chevron-left"></span></a>  
      <a href="{{ url('technicians/create') }}" class="btn btn-success btn-sm">New</a> 

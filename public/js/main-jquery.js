@@ -8,4 +8,5 @@ $(document).ready(function(){
     	    btn.css('display','none');
     	}
     });
+    
 });

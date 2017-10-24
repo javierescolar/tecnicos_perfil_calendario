@@ -42,10 +42,10 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
                     <li><a href="{{ url('/home') }}">Dashboard</a></li>
-                    <li><a href="{{ url('/technicians') }}">Technicians</a></li>
+                   <!-- <li><a href="{{ url('/technicians') }}">Technicians</a></li>
                     <li><a href="{{ url('/profiles') }}">Profiles</a></li>
                     <li><a href="{{ url('/home') }}">Calendars</a></li>
-                    <li><a href="{{ url('/home') }}">Caiders</a></li>
+                    <li><a href="{{ url('/home') }}">Caiders</a></li> -->
                 </ul>
 
                 <!-- Right Side Of Navbar -->

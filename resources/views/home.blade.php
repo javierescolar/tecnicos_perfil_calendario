@@ -47,7 +47,7 @@
                             <img src="https://image.flaticon.com/icons/svg/230/230189.svg" width="50"/>
                             Configura la lista de Caiders y asigna los técnicos de los mismos
                             <div>
-                                <a href="{{ url('home') }}" class="btn btn-primary col-md-offset-10">Go</a> 
+                                <a href="{{ url('caiders') }}" class="btn btn-primary col-md-offset-10">Go</a> 
                             </div>
                         </div>
                     </div>

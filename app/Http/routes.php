@@ -24,5 +24,7 @@ Route::group(['middleware' => 'auth'], function () {
     
     Route::resource('technicians', 'TechnicanController');
     Route::resource('profiles', 'ProfileController',['only' => ['index','store','update','destroy','create'] ]);
+    Route::resource('caiders', 'CaiderController');
+   
     
 });
