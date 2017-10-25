@@ -17,5 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call(TechnicianProfilesTableSeeder::class);
         $this->call(CaidersTableSeeder::class);
         $this->call(CaidersSchedulesTableSeeder::class);
+        $this->call(CaidersSchedulesUpdateTableSeeder::class);
     }
 }
