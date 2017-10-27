@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Caider;
+use Illuminate\Support\Facades\Input;
 
 class CaiderController extends Controller
 {
@@ -14,6 +15,14 @@ class CaiderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    protected $rules = [
+        'name' => 'required|min:3',
+        'local_id_trc' => 'required',
+        'address' => 'required|min:5',
+        'phone' => 'required|length:9',
+        'zip_code' => 'required|length:5',
+    ];
+     
     public function index()
     {
         $caiders = Caider::all();
@@ -27,8 +36,9 @@ class CaiderController extends Controller
      */
     public function create()
     {
-        //
+         return view('caiders/create');
     }
+    
 
     /**
      * Store a newly created resource in storage.
@@ -38,7 +48,29 @@ class CaiderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, $this->rules);
+        
+        $data =  Input::all();
+        
+        $caider = new Caider();
+        
+        $caider->local_id_trc = $data['local_id_trc'];
+        $caider->name = $date['name'];
+        $caider->address = $data['address'];
+        $caider->phone = $data['phone'];
+        $caider->zip_code = $data['zip_code'];
+        
+         if($caider->save()){
+            $sync_data = [];
+            foreach($data['schedule_from'] as $key => $schedule_from){
+                $sync_data[$schedule_from] = ['schedule_to' => $data['schedule_to'][$key], 'weekday' => $data['weekday'][$key] ];
+            }
+            $caider->schedules()->sync($sync_data);
+            return view("caiders/show",compact("caider"));
+        } else {
+            return redirect("/caiders");
+        }
+        
     }
 
     /**
@@ -74,7 +106,7 @@ class CaiderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+    
     }
 
     /**
@@ -89,7 +121,6 @@ class CaiderController extends Controller
     }
     
     public function searchDate(Request $request,$id) {
-        
         $caider = Caider::find($id);
         $date_search = $request->date_search;
         return view('caiders/show',compact('caider','date_search'));

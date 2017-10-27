@@ -7,7 +7,7 @@
     </h1>
     
      
-    <a href="{{ url('technicians') }}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-chevron-left"></span></a>  
+
     <div class="panel panel-default">
         <div class="panel-heading">New Technician</div>
         <div class="panel-body">
@@ -53,7 +53,8 @@
                     <p class="btn btn-default" id="btn_add_profile_edit"><span class="glyphicon glyphicon-plus-sign"></span></p>
                 </div>
                 <div class="form-group col-md-10 col-md-offset-1">
-                    <input type="submit" value="Save" class="btn btn-primary col-md-offset-11"/>
+                    <a href="{{ url('technicians') }}" class="btn btn-default btn-sm col-md-offset-10">Cancel</a> 
+                    <input type="submit" value="Save" class="btn btn-primary btn-sm"/>
                 </div>
             </form>
          </div>
