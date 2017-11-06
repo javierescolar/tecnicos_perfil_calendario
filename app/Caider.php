@@ -2,8 +2,9 @@
 
 namespace App;
 
-use DB;
+use App\CaiderSchedule;
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class Caider extends Model
 {
@@ -18,11 +19,7 @@ class Caider extends Model
     ];
     
     function schedules(){
-        $schedules = DB::table('caiders')
-            ->join('caiders_schedules', 'caiders.id', '=', 'caiders_schedules.caider_id')
-            ->select('caiders_schedules.*')
-            ->get();
-       return $schedules;
+        return $this->hasMany('App\CaiderSchedule');
     }
     
     function schedulesUpdate(){

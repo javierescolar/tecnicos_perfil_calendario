@@ -38,7 +38,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                                @foreach ($caider->schedules() as $schedule)
+                                @foreach ($caider->schedules as $schedule)
                                 <tr>
                                     <td>{{$schedule->weekday }}</td>
                                     <td>{{$schedule->schedule_from }}</td>

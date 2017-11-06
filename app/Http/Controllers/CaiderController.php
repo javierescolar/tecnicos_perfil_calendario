@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Caider;
+use App\CaiderSchedule;
 use Illuminate\Support\Facades\Input;
 
 class CaiderController extends Controller
@@ -19,8 +20,8 @@ class CaiderController extends Controller
         'name' => 'required|min:3',
         'local_id_trc' => 'required',
         'address' => 'required|min:5',
-        'phone' => 'required|length:9',
-        'zip_code' => 'required|length:5',
+        'phone' => 'required|min:9|max:9',
+        'zip_code' => 'required|min:5|max:5',
     ];
      
     public function index()
@@ -55,18 +56,27 @@ class CaiderController extends Controller
         $caider = new Caider();
         
         $caider->local_id_trc = $data['local_id_trc'];
-        $caider->name = $date['name'];
+        $caider->name = $data['name'];
         $caider->address = $data['address'];
         $caider->phone = $data['phone'];
         $caider->zip_code = $data['zip_code'];
         
-         if($caider->save()){
-            $sync_data = [];
-            foreach($data['schedule_from'] as $key => $schedule_from){
-                $sync_data[$schedule_from] = ['schedule_to' => $data['schedule_to'][$key], 'weekday' => $data['weekday'][$key] ];
+        
+
+        if($caider->save()){
+            $caiderSchedules = [];
+            for($i = 0; $i < count($data['schedule_from']); $i++){
+                $caiderSchedules[$i] = new CaiderSchedule([
+                                    'caider_id' => $caider->id,
+                                    'schedule_from' => $data['schedule_from'][$i],
+                                    'schedule_to' => $data['schedule_to'][$i],
+                                    'weekday' => $data['weekday'][$i]
+                                  ]);
+                
             }
-            $caider->schedules()->sync($sync_data);
-            return view("caiders/show",compact("caider"));
+            $caider->schedules()->saveMany($caiderSchedules);
+            $date_search = date('Y-m-d');
+            return view("caiders/show",compact("caider","date_search"));
         } else {
             return redirect("/caiders");
         }
@@ -94,7 +104,13 @@ class CaiderController extends Controller
      */
     public function edit($id)
     {
-        //
+        $caider = Caider::find($id);
+  
+        if($caider){
+            return view("caiders/edit",compact('caider'));
+        } else {
+            return redirect("/caiders");
+        }
     }
 
     /**
@@ -106,7 +122,44 @@ class CaiderController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->validate($request, $this->rules);
+        
+        $data =  Input::all();
+        
+        $caider =  Caider::find($id);
+        
+        if($caider){
+            $caider->local_id_trc = $data['local_id_trc'];
+            $caider->name = $data['name'];
+            $caider->address = $data['address'];
+            $caider->phone = $data['phone'];
+            $caider->zip_code = $data['zip_code'];
+            
+            
     
+            if($caider->update()){
+                if($caider->schedules){
+                    $caider->schedules()->delete();
+                }
+                $caiderSchedules = [];
+                for($i = 0; $i < count($data['schedule_from']); $i++){
+                    $caiderSchedules[$i] = new CaiderSchedule([
+                                        'caider_id' => $caider->id,
+                                        'schedule_from' => $data['schedule_from'][$i],
+                                        'schedule_to' => $data['schedule_to'][$i],
+                                        'weekday' => $data['weekday'][$i]
+                                      ]);
+                    
+                }
+                $caider->schedules()->saveMany($caiderSchedules);
+                $date_search = date('Y-m-d');
+                return view("caiders/show",compact("caider","date_search"));
+            }else {
+                return redirect("/caiders");
+            }
+        } else {
+            return redirect("/caiders");
+        }
     }
 
     /**
@@ -117,7 +170,14 @@ class CaiderController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $caider = Caider::find($id);
+        if($caider){
+            if($caider->schedules){
+                $caider->schedules()->delete();
+            }
+            $caider->delete();
+        } 
+        return redirect("/caiders");
     }
     
     public function searchDate(Request $request,$id) {
