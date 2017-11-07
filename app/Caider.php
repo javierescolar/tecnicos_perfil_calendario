@@ -3,6 +3,7 @@
 namespace App;
 
 use App\CaiderSchedule;
+use App\CaiderSchedulesUpdate;
 use Illuminate\Database\Eloquent\Model;
 use DB;
 
@@ -23,28 +24,10 @@ class Caider extends Model
     }
     
     function schedulesUpdate(){
-        $schedules = DB::table('caiders')
-            ->join('caiders_schedulesUpdate', 'caiders.id', '=', 'caiders_schedulesUpdate.caider_id')
-            ->select('caiders_schedulesUpdate.*')
-            ->get();
-       return $schedules;
-    }
-    
-    
-    function checkUpdateScheduleFromDate($date){
-        return ($schedules = DB::table('caiders')
-            ->join('caiders_schedulesUpdate', 'caiders.id', '=', 'caiders_schedulesUpdate.caider_id')
-            ->where ('weekday','=',$date)
-            ->count() > 0);
+        return $this->hasMany('App\CaiderSchedulesUpdate');
     }
     
     function schedulesFromDate($date){
-            
-        $schedules_update = DB::table('caiders')
-            ->join('caiders_schedulesUpdate', 'caiders.id', '=', 'caiders_schedulesUpdate.caider_id')
-            ->where ('weekday','=',$date)
-            ->get();
-            
-       return $schedules_update;
+        return $this->hasMany('App\CaiderSchedulesUpdate')->where('weekday','=',$date)->get();
     }
 }

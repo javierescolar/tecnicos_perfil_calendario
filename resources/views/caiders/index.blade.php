@@ -14,6 +14,9 @@
     <div class="panel panel-default">
         <div class="panel-heading">Caiders</div>
         <div class="panel-body">
+        @if(count($caiders) == 0)
+        <p>results not found ...</p>
+        @else
         @foreach ($caiders as $caider)
            <diV class="row">
                 <div class="col-md-3">{{$caider->name}}</div>
@@ -31,6 +34,7 @@
             </diV>
             <br>
         @endforeach
+        @endif
         </div>
     </div>
         

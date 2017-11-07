@@ -14,6 +14,9 @@
     <div class="panel panel-default">
         <div class="panel-heading">Technicians</div>
         <div class="panel-body">
+        @if(count($profiles) == 0)
+        <p>results not found ...</p>
+        @else
         @foreach ($profiles as $profile)
             <diV class="row">
                 <div class="col-md-11">
@@ -40,6 +43,7 @@
             </div>
             <br>
         @endforeach
+        @endif
         </div>
     </div>
     {{ $profiles->links() }}

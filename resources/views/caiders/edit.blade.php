@@ -52,7 +52,7 @@
                 </div>
                 <div class="form-group col-md-3" id="div_form_schedule_to">
                     <label for="schedule_to">technician_id_trc:</label>
-                     @foreach($caider->schedules as $schedule)
+                     @foreach($caider->schedules as $key => $schedule)
                     <select class="form-control" name="schedule_to[{{$key}}]">
                         <option selected value="{{$schedule->schedule_to}}">{{$schedule->schedule_to}}</option>
                          <option value="08:00">08:00</option>
@@ -66,7 +66,7 @@
                 </div>
                 <div class="form-group col-md-4" id="div_form_weekday">
                     <label for="weekday">technician_id_trc:</label>
-                     @foreach($caider->schedules as $schedule)
+                     @foreach($caider->schedules as $key => $schedule)
                     <select class="form-control" name="weekday[{{$key}}]">
                         <option selected value="{{$schedule->weekday}}">{{$schedule->weekday}}</option>
                         <option value="Monday">Monday</option>

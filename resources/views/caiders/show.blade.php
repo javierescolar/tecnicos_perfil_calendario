@@ -8,6 +8,7 @@
     
     
     <a href="{{ url('caiders') }}" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-chevron-left"></span></a> 
+    <a href="{{ url('caiders/'.$caider->id. '/update_schedule') }}" class="btn btn-success btn-sm">Update schedule days</a> 
     <form action="/caiders/{{$caider->id}}/search_date" method="GET">
         <input type="date" name="date_search" value="{{ $date_search }}"/>
         <button type"submit" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-search"></button>
@@ -45,7 +46,7 @@
                                     <td>{{$schedule->schedule_to }}</td>
                                 </tr>
                                 @endforeach
-                              @if(  $caider->checkUpdateScheduleFromDate(date('Y-m-d', strtotime($date_search))) )
+                              @if( count($caider->schedulesFromDate($date_search)) > 0 ) )
                               <tr><th colspan="3">Modifications today</th></tr>
                                 @foreach ($caider->schedulesFromDate($date_search) as $scheduleUpdate)
                                 <tr class="color-scheduleUpdate">

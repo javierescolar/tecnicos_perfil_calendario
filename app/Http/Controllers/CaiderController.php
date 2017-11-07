@@ -135,7 +135,7 @@ class CaiderController extends Controller
             $caider->phone = $data['phone'];
             $caider->zip_code = $data['zip_code'];
             
-            
+        
     
             if($caider->update()){
                 if($caider->schedules){
@@ -153,6 +153,7 @@ class CaiderController extends Controller
                 }
                 $caider->schedules()->saveMany($caiderSchedules);
                 $date_search = date('Y-m-d');
+                $caider =  Caider::find($id);
                 return view("caiders/show",compact("caider","date_search"));
             }else {
                 return redirect("/caiders");
@@ -184,5 +185,10 @@ class CaiderController extends Controller
         $caider = Caider::find($id);
         $date_search = $request->date_search;
         return view('caiders/show',compact('caider','date_search'));
+    }
+    
+    public function updateSchedule ($id) {
+        $caider = Caider::find($id);
+        return view('caiders/update_schedule',compact('caider'));
     }
 }
